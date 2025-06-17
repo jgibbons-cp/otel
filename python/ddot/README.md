@@ -49,9 +49,9 @@ Deploy the application
    kubectl create ns $APP_NAMESPACE  
 ```  
   
-2) Edit the environment variable value for ```SERVICE_NAMESPACE``` in 
+2) ***NOTE***: Edit the environment variable value for ```SERVICE_NAMESPACE``` in 
    ```sample_flask_app_otel.yaml``` if the agent is installed in a 
-   namespace other then ```default```  
+   namespace other then ```default``` Defaults to ```datadog-agent```.  
 
 3) Deploy  
   
@@ -88,7 +88,7 @@ In ```spec.template.spec.containers``` add the following under ```image:```:
         args: ["sample_flask_app_otel.py"]  
 ```  
   
-Hit is the same as above and see dd traces from the same image.  To switch, rebuild the container removing the OTEL instrumentation and the way the agent is configured it will auto-instrument.  
+Re-open the port-forward and navitate to ```http://localhost:33333``` and see dd traces from the same image.  To switch, rebuild the container removing the OTEL instrumentation and the way the agent is configured it will auto-instrument.  
   
 ```  
 CMD ["python3", "sample_flask_app_otel.py"]  
