@@ -1,8 +1,10 @@
+# base values file at https://github.com/DataDog/helm-charts/blob/main/charts/datadog/values.yaml
 datadog:
   apiKeyExistingSecret: datadog-secret
   appKeyExistingSecret: datadog-secret
 
-  clusterName: ddot
+  # just a tag
+  clusterName: otel-ddot-testbed
 
   kubelet:
     # aks true, eks true, kubeadm false
@@ -13,12 +15,7 @@ datadog:
     #    fieldRef:
     #      fieldPath: spec.nodeName
     #hostCAPath: /etc/kubernetes/certs/kubeletserver.crt
-
-  #dogstatsd:
-  #  port: 8125
-  #  useHostPort: true
-  #  nonLocalTraffic: true
-
+  
   apm:
     socketEnabled: true
     portEnabled: true
@@ -52,6 +49,7 @@ datadog:
           apiVersion: v1
           fieldPath: spec.nodeName
 
+  # dd agent with embedded otel collector / dd exporter
   otelCollector:
     enabled: true
     ports:
