@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-flask-app
+  labels:
+    tags.datadoghq.com/env: "sample-dd"
+    tags.datadoghq.com/service: "sample-dd"
+    tags.datadoghq.com/version: "1-dd"
+    app: sample-flask-app
+spec:
+  selector:
+    matchLabels:
+      app: sample-flask-app
+  template:
+    metadata:
+      labels:
+        tags.datadoghq.com/env: "sample-dd"
+        tags.datadoghq.com/service: "sample-dd"
+        tags.datadoghq.com/version: "1-dd"
+        app: sample-flask-app
+      annotations:
+        ad.datadoghq.com/python-trace-id-injection.logs: '[{"source": "python"}]'
+    spec:
+      containers:
+      - name: sample-flask-app
+        #image: jenksgibbons/hello_otel_python:v21
+        image: jenksgibbons/hello_otel_python:3-slim-bullseye-v1
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: DD_ENV
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.labels['tags.datadoghq.com/env']
+          - name: DD_SERVICE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.labels['tags.datadoghq.com/service']
+          - name: DD_VERSION
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.labels['tags.datadoghq.com/version']
+          - name: DD_LOGS_INJECTION
+            value: "true"
+          - name: HOST_IP
+            valueFrom:
+             fieldRef:
+                fieldPath: status.hostIP
+          - name: OTLP_GRPC_PORT
+            value: "4317"
+          # change if the service is in another ns
+          - name: SERVICE_NAMESPACE
+            value: "datadog-agent"
+          - name: OTEL_EXPORTER_OTLP_ENDPOINT
+            value: 'http://dd-agent-datadog.$(SERVICE_NAMESPACE).svc.cluster.local:$(OTLP_GRPC_PORT)'
+          - name: OTEL_EXPORTER_OTLP_PROTOCOL
+            value: 'grpc'
+          - name: OTEL_RESOURCE_ATTRIBUTES
+            value: "service.name=sample-flask-app-otel,application=sample-flask-app"
