@@ -69,8 +69,29 @@ Access the Application
 Access Traces
 --
   
-1) Trace Explorer in Datadog  
+1) Trace Explorer in Datadog - OTEL traces  
   
 ```https://app.datadoghq.com/apm/traces```  
+  
+Access Traces - Datadog traces
+--
+
+1) This is for example only, you should not be able to overwrite the `CMD` in the 
+container.  
+  
+In ```spec.template.spec.containers``` add the following under ```image:```:  
+  
+```  
+        command: ["python3"]  
+        args: ["sample_flask_app_otel.py"]  
+```  
+  
+Hit is the same as above and see dd traces from the same image.  To switch, rebuild the container removing the OTEL instrumentation and the way the agent is configured it will auto-instrument.  
+  
+```  
+CMD ["python3", "sample_flask_app_otel.py"]  
+```  
+  
+
 
   
