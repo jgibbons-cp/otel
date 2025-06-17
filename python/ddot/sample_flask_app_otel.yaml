@@ -23,8 +23,7 @@ spec:
     spec:
       containers:
       - name: sample-flask-app
-        #image: jenksgibbons/hello_otel_python:v21
-        image: jenksgibbons/hello_otel_python:3-slim-bullseye-v1
+        image: jenksgibbons/hello_otel_python:3-slim-bullseye-v2
         imagePullPolicy: IfNotPresent
         env:
           - name: DD_ENV
