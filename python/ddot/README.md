@@ -24,12 +24,14 @@ Agent, with embedded OTEL Collector/Datadog Exporter Deployment
 ``` 
    # [API](https://app.datadoghq.com/organization-settings/api-keys)
    # and [application](https://app.datadoghq.com/organization-settings/application-keys) keys  
+   export API_KEY=<API_KEY>  
+   export APP_KEY=<APP_KEY>  
    kubectl create secret generic datadog-secret\  
-      --from-literal api-key=<API_KEY>\  
-      --from-literal app-key=<APP_KEY> -n $NAMESPACE  
+      --from-literal api-key=$API_KEY\  
+      --from-literal app-key=$APP_KEY -n $NAMESPACE  
 ```  
   
-3) Deploy  
+3) Deploy - tested on EKS on EC2  
   
 ```  
    helm upgrade dd-agent -f values_ddot.yaml\
