@@ -26,8 +26,8 @@ Agent, with embedded OTEL Collector/Datadog Exporter Deployment
    # and [application](https://app.datadoghq.com/organization-settings/application-keys) keys  
    export API_KEY=<API_KEY>  
    export APP_KEY=<APP_KEY>  
-   kubectl create secret generic datadog-secret\  
-      --from-literal api-key=$API_KEY\  
+   kubectl create secret generic datadog-secret \  
+      --from-literal api-key=$API_KEY \  
       --from-literal app-key=$APP_KEY -n $NAMESPACE  
 ```  
   
