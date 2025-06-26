@@ -35,7 +35,7 @@ The tag comes from:
 Datadog Instrumeted Application
 --
   
-If you want to test this, uncomment the ```command``` and ```args``` in the manifest. 
+If you want to test this, uncomment the ```command``` and ```args``` in the manifest (assumes you are using single-step instrumentation in your agent config). 
 
 ```service:unified_service```. 
   
