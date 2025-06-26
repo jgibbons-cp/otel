@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: non-default-tags
+  labels:
+    app: non-default-tags
+    tags.datadoghq.com/env: "non-default-tags"
+    tags.datadoghq.com/service: "unified_service"
+    tags.datadoghq.com/version: "1"
+spec:
+  selector:
+    matchLabels:
+      app: non-default-tags
+  template:
+    metadata:
+      labels:
+        app: non-default-tags
+        tags.datadoghq.com/env: "non-default-tags"
+        tags.datadoghq.com/service: "unified_service"
+        tags.datadoghq.com/version: "1"
+      annotations:
+        ad.datadoghq.com/container-one.logs: '[{"service":"unified-service", "source":"python"}]'
+    spec:
+      containers:
+      - image: jenksgibbons/hello_otel_python:3-slim-bullseye-v2
+        name: container-one
+        #command: ["python3"]  
+        #args: ["sample_flask_app_otel.py"]  
+        env:
+          - name: DD_ENV
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.labels['tags.datadoghq.com/env']
+          - name: DD_SERVICE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.labels['tags.datadoghq.com/service']
+          - name: DD_VERSION
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.labels['tags.datadoghq.com/version']
+          - name: OTLP_GRPC_PORT
+            value: "4317"
+          - name: SERVICE_NAMESPACE
+            value: "datadog"
+          - name: DATADOG_AGENT_SERVICE
+            value: "dd-agent-datadog"
+          - name: OTEL_EXPORTER_OTLP_ENDPOINT
+            value: 'http://$(DATADOG_AGENT_SERVICE).$(SERVICE_NAMESPACE).svc.cluster.local:$(OTLP_GRPC_PORT)'
+          - name: OTEL_EXPORTER_OTLP_PROTOCOL
+            value: 'grpc'
+          - name: OTEL_RESOURCE_ATTRIBUTES
+            value: "service.name=unified_service"
+      - image: busybox
+        name: container-two
+        command: ["sleep"]
+        args: ["1d"]
+

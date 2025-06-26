@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: default-tags
+  labels:
+    app: default-tags
+spec:
+  selector:
+    matchLabels:
+      app: default-tags
+  template:
+    metadata:
+      labels:
+        app: default-tags
+    spec:
+      containers:
+      - image: jenksgibbons/hello_otel_python:3-slim-bullseye-v2
+        name: container-one
+        env:
+          - name: OTLP_GRPC_PORT
+            value: "4317"
+          - name: SERVICE_NAMESPACE
+            value: "datadog"
+          - name: DATADOG_AGENT_SERVICE
+            value: "dd-agent-datadog"
+          - name: OTEL_EXPORTER_OTLP_ENDPOINT
+            value: 'http://$(DATADOG_AGENT_SERVICE).$(SERVICE_NAMESPACE).svc.cluster.local:$(OTLP_GRPC_PORT)'
+          - name: OTEL_EXPORTER_OTLP_PROTOCOL
+            value: 'grpc'
+      - image: busybox
+        name: container-two
+        command: ["sleep"]
+        args: ["1d"]
+
