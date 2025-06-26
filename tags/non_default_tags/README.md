@@ -21,7 +21,7 @@ The log will be parsed by the python pipeline.
 APM
 --  
 
-- OTEL Instrumented Application  
+1) OTEL Instrumented Application  
   
 I did not expose a port.  The server runs on 81.  To generate traces either expose the port and use a port-forward or:  
   
@@ -49,7 +49,7 @@ The tag comes from:
 ```  
 
   
-- Datadog Instrumented Application  
+2) Datadog Instrumented Application  
   
 If you want to test this, uncomment the ```command``` and ```args``` in the manifest (assumes you are using single-step instrumentation in your agent config). 
 
