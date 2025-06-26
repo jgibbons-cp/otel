@@ -21,6 +21,21 @@ The log will be parsed by the python pipeline.
 OTEL Instrumented Application
 --
 
+I did not expose a port.  The server runs on 81.  To generate traces either expose the port and use a port-forward or:  
+  
+```  
+$ kubectl exec -it non-default-tags-68f8f964cf-bn4ph -- bash  
+Defaulted container "container-one" out of: container-one, container-two, datadog-init-apm-inject (init), datadog-lib-python-init (init)  
+root@non-default-tags-68f8f964cf-bn4ph:/app# apt update  
+...  
+...  
+root@non-default-tags-68f8f964cf-bn4ph:/app# apt install curl -y  
+...  
+...  
+root@non-default-tags-68f8f964cf-bn4ph:/app# curl localhost:81  
+Web App with Python Flask!root@non-default-tags-68f8f964cf-bn4ph:/app#  
+``` 
+  
 ```service:unified_service```. 
   
 The tag comes from:  
