@@ -26,14 +26,11 @@ OTEL Instrumented Application
 The tag comes from:  
   
 ```  
-   metadata.labels  
-     tags.datadoghq.com/service: "unified_service"  
-  
-   and
-    
-   spec.template.metadata.labels  
-     tags.datadoghq.com/service: "unified_service"  
-```
+        env:  
+          - name: OTEL_RESOURCE_ATTRIBUTES  
+            value: "service.name=unified_service"  
+```  
+
   
 Datadog Instrumeted Application
 --
@@ -45,8 +42,12 @@ If you want to test this, uncomment the ```command``` and ```args``` in the mani
 The tag comes from:  
   
 ```  
-        env:  
-          - name: OTEL_RESOURCE_ATTRIBUTES  
-            value: "service.name=unified_service"  
-```  
+   metadata.labels  
+     tags.datadoghq.com/service: "unified_service"  
+  
+   and
+    
+   spec.template.metadata.labels  
+     tags.datadoghq.com/service: "unified_service"  
+```
 
